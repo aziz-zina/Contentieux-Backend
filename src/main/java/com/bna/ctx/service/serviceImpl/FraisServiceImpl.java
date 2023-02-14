@@ -31,9 +31,8 @@ public class FraisServiceImpl implements FraisService {
 	public Frais addFrais(Frais frais) {
 		fraisRepository.save(frais);
 		Risque risque = risqueService.getRisque(frais.getRisque().getNumRisque());
-		System.out.println(risque.toString());
-		risque.setFraisTotales(risque.getFraisTotales() + frais.getMontantFrais());
-		risque.setSoldePrincipal(risque.getFraisTotales() + risque.getMontantInitial());
+//		risque.setFraisTotales(risque.getFraisTotales() + frais.getMontantFrais());
+//		risque.setSoldePrincipal(risque.getFraisTotales() + risque.getMontantInitial());
 		risqueService.updateRisque(risque);
 		System.out.println(risqueService.getRisque(frais.getRisque().getNumRisque()));
 		return frais;
@@ -72,6 +71,8 @@ public class FraisServiceImpl implements FraisService {
 		Risque risque = frais.getRisque();
 		DebiteurCtx debiteur =  debiteurCtxService.getDebiteurCtxByRisque(risque.getNumRisque());
 		risque.setDebiteurCtx(debiteur);
+		risque.setFraisTotales(risque.getFraisTotales() + frais.getMontantFrais());
+		risque.setSoldePrincipal(risque.getFraisTotales() + risque.getMontantInitial());
 		frais.setEtatFrais("Validé");
 		risqueService.updateRisque(risque);
 		this.updateFrais(frais);
